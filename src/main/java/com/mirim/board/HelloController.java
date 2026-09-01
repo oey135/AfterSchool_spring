@@ -25,7 +25,6 @@ public class HelloController {
     // 브라우저에서 주소팡으로 직접 요청할때는 GET 이외의 메서드는 보낼 수 없다.
     // 1. 게시글 작성하는 어떻게 테스트할까?
     // 2. RestController, Getmapping 뭐하는 애들일까?
-
     @Value("${my.message}")
     private String message;
 
@@ -39,7 +38,7 @@ public class HelloController {
         return message;
 //        throw new RuntimeException("일부러 에러를 냈습니다.");
     }
-
+    // Map으로 반환 시 json으로 받음
     @GetMapping("/hello-map")
     public Map<String, Object> helloMap() {
         return Map.of("name", "김미림", "grade", 2);
