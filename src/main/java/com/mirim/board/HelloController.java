@@ -38,6 +38,7 @@ public class HelloController {
         return message;
 //        throw new RuntimeException("일부러 에러를 냈습니다.");
     }
+
     // Map으로 반환 시 json으로 받음
     @GetMapping("/hello-map")
     public Map<String, Object> helloMap() {

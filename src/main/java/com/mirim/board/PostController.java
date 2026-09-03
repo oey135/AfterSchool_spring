@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+// 근데 클래스는 인스턴스화 해야하잖아?? 근데 우린 안했어. 그럼 누가?? - 스프링부트가!
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
+    private SmsNotifier notifier = new SmsNotifier();
 
     // @RequestParam : 주소에서 ?로 쿼리파라미터를 받아옴!
     // - required : 필수 여부 옵션, 기본값은 true
@@ -53,9 +57,45 @@ public class PostController {
         response.put("title",title);
         response.put("content", content);
         response.put("message", "게시글이 등록되었습니다.");
+
+        //이메일 발송 (로그로 대체)
+        notifier.send(title + " 게시글이 등록되었습니다.");
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> putPosts(@PathVariable long id, @RequestBody Map<String, Object> request) {
+        if(id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("게시물 번호는 1 이상이여야 합니다.");
+        } else if(id > 10) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 게시물입니다.");
+        }
+
+        String title = (String) request.get("title");
+        String content = (String) request.get("content");
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", id);
+        response.put("title", title);
+        response.put("content", content);
+        response.put("message", "게시글이 수정되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePosts(@PathVariable long id) {
+        if(id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("게시글 번호는 1이상이어야 합니다.");
+        } else if(id > 10) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 게시글입니다.");
+        }
+
+        //db에서 삭제한다고 치고
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }
