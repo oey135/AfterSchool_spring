@@ -13,10 +13,15 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-    private SmsNotifier notifier = new SmsNotifier();
-
+    private final Notifier notifier;
+    // private SmsNotifier notifier = new SmsNotifier(); // 강결합, 하지만 객체지향은 낮은 결합도를 지향
     // @RequestParam : 주소에서 ?로 쿼리파라미터를 받아옴!
     // - required : 필수 여부 옵션, 기본값은 true
+
+    public PostController(Notifier notifier) { // 왜 오류나나? postcontroller가 bin 파일이 필요한데, bin이 없으요
+        this.notifier = notifier;
+    }
+
     @GetMapping
     public String getPosts(@RequestParam(required = false) String keyword) {
         if(keyword != null) {

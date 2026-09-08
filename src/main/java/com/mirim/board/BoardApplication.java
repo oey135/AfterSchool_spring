@@ -1,7 +1,11 @@
 package com.mirim.board;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
 public class BoardApplication { // spring boot 앱의 시작점
@@ -11,7 +15,20 @@ public class BoardApplication { // spring boot 앱의 시작점
     // 3. 내장 톰캣을 띄운다. 그에 맞는 포트(8080)가 열린다.
     // 4. 요청을 받아서 요청이 오면 알맞는 코드로 넘겨준다.
     public static void main(String[] args) {
-        SpringApplication.run(BoardApplication.class, args);
+        ApplicationContext context = SpringApplication.run(BoardApplication.class, args);
+        // applicationContext == spring container
+        Notifier norifier = context.getBean(Notifier.class);
+        norifier.send("컨테이너에서 직접 꺼낸 테스트 메시지 입니다.");
+
+        try {
+            context.getBean(SmsNotifier.class);
+        } catch (NoSuchBeanDefinitionException e) {
+            System.out.println("smsNotifier는 컨테이너에 없음: "+e.getMessage());
+        }
+
+        System.out.println("등록된 Bean 개수 : "+ context.getBeanDefinitionNames().length);
+        System.out.println("emailNotifier 등록 여부 : " + context.containsBean("emailNotifier"));
+        System.out.println("smsNotifier 등록 여부 : " + context.containsBean("smsNotifier"));
     }
 
 }
