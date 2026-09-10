@@ -24,6 +24,7 @@ public class PostController {
 
     @GetMapping
     public String getPosts(@RequestParam(required = false) String keyword) {
+        System.out.println("이 요청을 처리하는 PostController : "+System.identityHashCode(this));
         if(keyword != null) {
             return keyword + "로 검색한 결과입니다.";
         }

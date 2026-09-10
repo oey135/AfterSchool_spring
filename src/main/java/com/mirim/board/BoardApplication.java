@@ -17,11 +17,19 @@ public class BoardApplication { // spring boot 앱의 시작점
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(BoardApplication.class, args);
         // applicationContext == spring container
-        Notifier norifier = context.getBean(Notifier.class);
-        norifier.send("컨테이너에서 직접 꺼낸 테스트 메시지 입니다.");
+        Notifier notifier1 = context.getBean(Notifier.class);
+        Notifier notifier2 = context.getBean(Notifier.class);
+        System.out.println("같은 객체인가? "+(notifier1 == notifier2)); //true
+
+        Notifier direct1 = new EmailNotifier();
+        Notifier direct2 = new EmailNotifier();
+        System.out.println("직접 만들면 같은 객체인가? "+(direct1 == direct2)); //false인
+
+//        norifier.send("컨테이너에서 직접 꺼낸 테스트 메시지 입니다.");
 
         try {
             context.getBean(SmsNotifier.class);
+
         } catch (NoSuchBeanDefinitionException e) {
             System.out.println("smsNotifier는 컨테이너에 없음: "+e.getMessage());
         }
@@ -29,6 +37,9 @@ public class BoardApplication { // spring boot 앱의 시작점
         System.out.println("등록된 Bean 개수 : "+ context.getBeanDefinitionNames().length);
         System.out.println("emailNotifier 등록 여부 : " + context.containsBean("emailNotifier"));
         System.out.println("smsNotifier 등록 여부 : " + context.containsBean("smsNotifier"));
+        System.out.println("OutsideComponent 등록 여부 : "+context.containsBean("outsideComponent")); // false
+
+
     }
 
 }

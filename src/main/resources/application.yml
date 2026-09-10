@@ -1,2 +1,6 @@
 my :
-  message: this is hello message
+  message: this is hello message.
+# 맵핑이 언제 되는 지 확인하기 위해 로그 레벨을 낮춤
+#logging:
+#  level:
+#    org.springframework.web: DEBUG
