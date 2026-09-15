@@ -1,0 +1,31 @@
+package com.mirim.board.repository;
+
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class PostRepository {
+    // 아직 진짜 저장소는 없음
+    // 컨트롤러에서 쓰던 가짜 규칙을 옮긴다. ex) id > 10이면 없다 등
+
+    public boolean existsById(Long id) {
+        return id <= 10;
+    }
+
+    public List<Map<String, Object>> findAll() {
+        //아직 진짜 데이터는 없다.
+        return new ArrayList<>();
+    }
+
+    public long count() {
+        return 0;
+    }
+
+    public List<Map<String, Object>> findByKeyword(String keyword) {
+        //아직 진짜 데이터는 없다.
+        return new ArrayList<>();
+    }
+}
