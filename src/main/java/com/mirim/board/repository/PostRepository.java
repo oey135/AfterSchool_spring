@@ -1,18 +1,29 @@
 package com.mirim.board.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class PostRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate; // 스프링 부트가 도와줘서 편하게 사용
     private final List<Map<String, Object>> posts = new ArrayList<>();
     private Long nextId = 1L;
+
+    // 뭐시기
+    private final RowMapper<Map<String, Object>> postRowMapper = (rs, rowNum) -> {
+        Map<String, Object> post = new HashMap<>();
+        post.put("id", rs.getLong("id"));
+        post.put("title", rs.getString("title"));
+        post.put("title", rs.getString("content"));
+        return post;
+    };
 
     public PostRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -29,7 +40,8 @@ public class PostRepository {
     }
 
     public List<Map<String, Object>> findAll() {
-        //아직 진짜 데이터는 없다.
+        String sql = "select * from posts";
+        jdbcTemplate.query(sql, postRowMapper);
         return posts;
     }
 
