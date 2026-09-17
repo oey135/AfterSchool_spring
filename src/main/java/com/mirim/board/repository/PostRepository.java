@@ -10,17 +10,17 @@ import java.util.Map;
 public class PostRepository {
     // 아직 진짜 저장소는 없음
     // 컨트롤러에서 쓰던 가짜 규칙을 옮긴다. ex) id > 10이면 없다 등
-    private final list_Map posts = new ArrayList<>();
+    private final List<Map<String, Object>> posts = new ArrayList<>();
     private Long nextId = 1L;
 
-    public Map<String, Object> save(Map<String, Object> {
-        post.put("id, nextId++");
+    public Map<String, Object> save(Map<String, Object> post) {
+        post.put("id", nextId++);
         posts.add(post);
         return post;
-    })
+    }
 
     public boolean existsById(Long id) {
-        return findById() != null;
+        return findById(id) != null;
     }
 
     public List<Map<String, Object>> findAll() {
@@ -52,19 +52,16 @@ public class PostRepository {
     }
 
     public List<Map<String, Object>> findByKeyword(String keyword) {
-        List<Map<String, Objext>> result = new ArrayList<>();
+        List<Map<String, Object>> result = new ArrayList<>();
 
-        // 1. 전체 게시글을 순회하면서 keyword 포함ㅎ는 지 확인
+        // 1. 전체 게시글을 순회하면서 keyword 포함하는 지 확인
         for (Map<String, Object> post : posts) {
             String title = (String) post.get("title");
             // 2. 포함하면 result에 게시글 정보 추가
             if(title != null && title.contains(keyword)) {
                 result.add(post);
             }
-            return result;
         }
-
-
         return result;
     }
 }

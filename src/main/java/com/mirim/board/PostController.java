@@ -53,7 +53,7 @@ public class PostController {
 
     @GetMapping("/count")
     public String getPostCount() {
-        long postCount = postService.getPosCount();
+        long postCount = postService.getPostCount();
         return "게시글 개수 : "+postCount+"개";
     }
 
