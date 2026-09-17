@@ -1,5 +1,6 @@
 package com.mirim.board.repository;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,10 +9,14 @@ import java.util.Map;
 
 @Repository
 public class PostRepository {
-    // 아직 진짜 저장소는 없음
-    // 컨트롤러에서 쓰던 가짜 규칙을 옮긴다. ex) id > 10이면 없다 등
+
+    private final JdbcTemplate jdbcTemplate;
     private final List<Map<String, Object>> posts = new ArrayList<>();
     private Long nextId = 1L;
+
+    public PostRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public Map<String, Object> save(Map<String, Object> post) {
         post.put("id", nextId++);
